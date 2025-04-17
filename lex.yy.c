@@ -805,7 +805,7 @@ YY_RULE_SETUP
 case 9:
 YY_RULE_SETUP
 #line 34 "lexico.l"
-{yylval.label = "false"; return TK_FALSE}
+{yylval.label = "false"; return TK_FALSE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
@@ -825,7 +825,7 @@ YY_RULE_SETUP
 case 13:
 YY_RULE_SETUP
 #line 42 "lexico.l"
-{ yylval.label = yytext; return TK_INT_VAL; }
+{ yylval.label = yytext; return TK_NUM; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
@@ -835,12 +835,12 @@ YY_RULE_SETUP
 case 15:
 YY_RULE_SETUP
 #line 44 "lexico.l"
-{ yylval.label = yytext; return TK_FLOAT_VAL; }
+{ yylval.label = yytext; return TK_TIPO_FLOAT; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 45 "lexico.l"
-{ yylval.label = yytext; return TK_CHAT_VAL; }
+{ yylval.label = yytext; return TK_TIPO_CHAR; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP

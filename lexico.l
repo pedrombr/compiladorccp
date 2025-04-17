@@ -39,10 +39,10 @@ ID {LETRA}({LETRA}|{NUM})*
 
 "="		    { return '='; }
 
-{NUM}		{ yylval.label = yytext; return TK_INT_VAL; }
+{NUM}		{ yylval.label = yytext; return TK_NUM; }
 {ID}		{ yylval.label = yytext; return TK_ID; }
-{REAL}      { yylval.label = yytext; return TK_FLOAT_VAL; }
-{CHAR}      { yylval.label = yytext; return TK_CHAR_VAL; }
+{REAL}      { yylval.label = yytext; return TK_TIPO_FLOAT; }
+{CHAR}      { yylval.label = yytext; return TK_TIPO_CHAR; }
 
 .			{ *yytext; }
 
