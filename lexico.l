@@ -23,6 +23,11 @@ ID {LETRA}({LETRA}|{NUM})*
 
 "int"		{return TK_TIPO_INT;}
 
+"float"     {return TK_TIPO_FLOAT;}
+
+"double"    {return TK_TIPO_DOUBLE}
+
+
 [(){}[\];,]	{ return *yytext; }
 
 [+\-*/]		{ return *yytext; }
