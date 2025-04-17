@@ -29,7 +29,8 @@ string gentempcode();
 %token TK_NUM
 %token TK_MAIN TK_ID TK_TIPO_INT
 %token TK_FIM TK_ERROR
-%token TK_TIPO_FLOAT TK_TIPO_DOUBLE
+%token TK_TIPO_FLOAT
+%token TK_TIPO_CHAR TK_TIPO_BOOLEAN
 
 %start S
 
