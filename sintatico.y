@@ -36,9 +36,9 @@ string gentempcode();
 
 %start S
 
-%left '+' '-'      // Menor precedência
-%left '*' '/'      // Maior precedência
-
+%left '+' '-'      
+%left '*' '/'      
+%right '(' ')'
 
 %%
 
@@ -104,6 +104,10 @@ E 			: E '+' E
 				$$.label = gentempcode();
 				$$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + 
 					" = " + $1.label + " / " + $3.label + ";\n";
+			}
+			| '(' E ')'
+			{
+				$$ = $2;
 			}
 			| TK_ID '=' E
 			{
