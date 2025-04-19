@@ -482,9 +482,8 @@ char *yytext;
 #line 1 "lexico.l"
 #line 2 "lexico.l"
 #include <string>
-
+#line 486 "lex.yy.c"
 #line 487 "lex.yy.c"
-#line 488 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -701,10 +700,10 @@ YY_DECL
 		}
 
 	{
-#line 16 "lexico.l"
+#line 14 "lexico.l"
 
 
-#line 708 "lex.yy.c"
+#line 707 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -764,95 +763,95 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 18 "lexico.l"
+#line 16 "lexico.l"
 {}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 20 "lexico.l"
+#line 17 "lexico.l"
 {}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 22 "lexico.l"
-{return TK_MAIN;}
+#line 18 "lexico.l"
+{ return TK_MAIN; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 24 "lexico.l"
-{return TK_TIPO_INT;}
+#line 19 "lexico.l"
+{ return TK_TIPO_INT; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 26 "lexico.l"
-{return TK_TIPO_FLOAT;}
+#line 20 "lexico.l"
+{ return TK_TIPO_FLOAT; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 28 "lexico.l"
-{return TK_TIPO_CHAR;}
+#line 21 "lexico.l"
+{ return TK_TIPO_CHAR; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 30 "lexico.l"
-{return TK_TIPO_BOOLEAN;}
+#line 22 "lexico.l"
+{ return TK_TIPO_BOOLEAN; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 32 "lexico.l"
-{yylval.label = "true"; return TK_TRUE;}
+#line 23 "lexico.l"
+{ yylval.label = "true"; return TK_TRUE; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 34 "lexico.l"
-{yylval.label = "false"; return TK_FALSE;}
+#line 24 "lexico.l"
+{ yylval.label = "false"; return TK_FALSE; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 36 "lexico.l"
+#line 25 "lexico.l"
 { return *yytext; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 38 "lexico.l"
+#line 26 "lexico.l"
 { return *yytext; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 40 "lexico.l"
+#line 27 "lexico.l"
 { return '='; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 42 "lexico.l"
+#line 28 "lexico.l"
 { yylval.label = yytext; return TK_NUM; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 43 "lexico.l"
+#line 29 "lexico.l"
 { yylval.label = yytext; return TK_ID; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 44 "lexico.l"
-{ yylval.label = yytext; return TK_TIPO_FLOAT; }
+#line 30 "lexico.l"
+{ yylval.label = yytext; return TK_FLOAT_VAL; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 45 "lexico.l"
+#line 31 "lexico.l"
 { yylval.label = yytext; return TK_TIPO_CHAR; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 47 "lexico.l"
+#line 32 "lexico.l"
 { *yytext; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 49 "lexico.l"
+#line 34 "lexico.l"
 ECHO;
 	YY_BREAK
-#line 856 "lex.yy.c"
+#line 855 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1857,6 +1856,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 49 "lexico.l"
+#line 34 "lexico.l"
 
 
