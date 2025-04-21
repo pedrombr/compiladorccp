@@ -24,6 +24,12 @@ ID {LETRA}({LETRA}|{NUM})*
 "false"        { yylval.label = "false"; return TK_FALSE; }
 [(){}[\];,]    { return *yytext; }
 [+\-*/]        { return *yytext; }
+"<"            { return '<'; }
+"<="           { return TK_MENOR_IGUAL; }
+">"            { return '>'; }
+">="           { return TK_MAIOR_IGUAL; }
+"=="           { return TK_IGUAL_IGUAL; }
+"!="           { return TK_DIFERENTE; }
 "="            { return '='; }
 {NUM}          { yylval.label = yytext; return TK_NUM; }
 {ID}           { yylval.label = yytext; return TK_ID; }

@@ -1,7 +1,4 @@
 int main() {
-	char C;
-	C = 'a';
-
-	bool B;
-	B = true;
+	bool R;
+	R = 3 != 5;
 }

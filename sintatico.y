@@ -34,6 +34,7 @@ string gentempcode(string tipo);
 %token TK_TIPO_CHAR TK_TIPO_BOOLEAN TK_TIPO_INT TK_TIPO_FLOAT
 %token TK_CHAR_VAL TK_INT_VAL TK_FLOAT_VAL
 %token TK_TRUE TK_FALSE
+%token TK_MENOR_IGUAL TK_MAIOR_IGUAL TK_IGUAL_IGUAL TK_DIFERENTE
 
 %start S
 %left '+' '-'
@@ -111,8 +112,31 @@ string gentempcode(string tipo);
         | '(' E ')' {
             $$ = $2;
         }
+		| E '<' E {
+            $$.label = gentempcode("bool");
+            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " < " + $3.label + ";\n";
+		}
+		| E TK_MENOR_IGUAL E {
+            $$.label = gentempcode("bool");
+            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " <= " + $3.label + ";\n";
+		}
+		| E '>' E {
+            $$.label = gentempcode("bool");
+            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " > " + $3.label + ";\n";
+		}
+		| E TK_MAIOR_IGUAL E {
+            $$.label = gentempcode("bool");
+            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " >= " + $3.label + ";\n";
+		}
+		| E TK_IGUAL_IGUAL E {
+            $$.label = gentempcode("bool");
+            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " == " + $3.label + ";\n";
+		}
+		| E TK_DIFERENTE E {
+            $$.label = gentempcode("bool");
+            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " != " + $3.label + ";\n";
+		}
     	|TK_FLOAT_VAL{
-        
     		 $$.label = gentempcode("float");
        		 $$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
     	}
