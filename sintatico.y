@@ -115,8 +115,6 @@ E
    		 $$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
 	}
 	
-
-
     | TK_ID '=' E {
         string tipoVar = tiposVarTemps[$1.label];
         string tipoExpr = tiposVarTemps[$3.label];

@@ -619,8 +619,8 @@ static const yytype_int8 yytranslate[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    45,    45,    56,    61,    64,    69,    72,    83,    84,
-      85,    86,    89,    94,    99,   104,   109,   112,   120,   128,
-     132
+      85,    86,    89,    94,    99,   104,   109,   112,   118,   126,
+     130
 };
 #endif
 
@@ -1345,7 +1345,7 @@ yyreduce:
     break;
 
   case 18: /* E: TK_ID '=' E  */
-#line 120 "sintatico.y"
+#line 118 "sintatico.y"
                   {
         string tipoVar = tiposVarTemps[yyvsp[-2].label];
         string tipoExpr = tiposVarTemps[yyvsp[0].label];
@@ -1358,7 +1358,7 @@ yyreduce:
     break;
 
   case 19: /* E: TK_NUM  */
-#line 128 "sintatico.y"
+#line 126 "sintatico.y"
              {
         yyval.label = gentempcode("int");
         yyval.traducao = "\t" + yyval.label + " = " + yyvsp[0].label + ";\n";
@@ -1367,7 +1367,7 @@ yyreduce:
     break;
 
   case 20: /* E: TK_ID  */
-#line 132 "sintatico.y"
+#line 130 "sintatico.y"
             {
         if (!tiposVarTemps.count(yyvsp[0].label)) {
             cout << "Erro: Variável '" << yyvsp[0].label << "' não foi declarada." << endl;
@@ -1574,7 +1574,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 142 "sintatico.y"
+#line 140 "sintatico.y"
 
 
 #include "lex.yy.c"
