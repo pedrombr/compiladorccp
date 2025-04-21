@@ -52,6 +52,12 @@ string gentempcode(string tipo);
                         "#define false 0\n"
                         "#include<stdio.h>\n"
                         "int main(void) {\n";
+
+        for (auto& par : tiposVarTemps) {
+            codigo += "\t" + par.second + " " + par.first + ";\n"; 
+        }
+
+        codigo += "\n";
         codigo += $5.traducao;
         codigo += "\treturn 0;\n}";
         cout << codigo << endl;
@@ -214,9 +220,6 @@ string gentempcode(string tipo) {
 int main(int argc, char* argv[]) {
     var_temp_qnt = 0;
     yyparse();
-    for (auto& par : tiposVarTemps) {
-        cout << par.second << " " << par.first << ";" << endl;
-    }
     return 0;
 }
 
