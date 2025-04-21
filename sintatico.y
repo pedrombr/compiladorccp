@@ -42,100 +42,116 @@ string gentempcode(string tipo);
 
 %%
 
-S : TK_TIPO_INT TK_MAIN '(' ')' BLOCO {
-    string codigo = "/*Compilador FOCA*/\n"
-                    "#include <iostream>\n"
-                    "#include<string.h>\n"
-                    "#include<stdio.h>\n"
-                    "int main(void) {\n";
-    codigo += $5.traducao;
-    codigo += "\treturn 0;\n}";
-    cout << codigo << endl;
-};
+S 			: TK_TIPO_INT TK_MAIN '(' ')' BLOCO 
+			{
+    				string codigo = "/*Compilador FOCA*/\n"
+                    								"#include <iostream>\n"
+                    								"#include<string.h>\n"
+                   									"#include<stdio.h>\n"
+                    								"int main(void) {\n";
+    				codigo += $5.traducao;
 
-BLOCO : '{' COMANDOS '}' {
-    $$.traducao = $2.traducao;
-};
+    				codigo += "\treturn 0;"
+										"\n}";
 
-COMANDOS
-    : COMANDO COMANDOS {
-        $$.traducao = $1.traducao + $2.traducao;
-    }
-    | {
-        $$.traducao = "";
-    };
+    				cout << codigo << endl;
+			}
+			;
 
-COMANDO
-    : E ';' {
-        $$ = $1;
-    }
-    | TIPO TK_ID ';' {
-   		 if (tiposVarTemps.count($2.label)) {
-        	cout << "Erro: Variável '" << $2.label << "' já foi declarada." << endl;
-        	exit(1);
-    }
-    	tiposVarTemps[$2.label] = $1.label;
-    	variaveisTemps.insert($2.label);
-    	$$.traducao = ""; 
-};
+BLOCO 		: '{' COMANDOS '}' 
+			{
+    			$$.traducao = $2.traducao;
+			}
+			;
 
-TIPO
-    : TK_TIPO_INT     { $$.label = "int"; }
-    | TK_TIPO_FLOAT   { $$.label = "float"; }
-    | TK_TIPO_CHAR    { $$.label = "char"; }
-    | TK_TIPO_BOOLEAN { $$.label = "bool"; };
+COMANDOS	: COMANDO COMANDOS 
+			{
+        		$$.traducao = $1.traducao + $2.traducao;
+    		}
+    		| 
+			{
+        		$$.traducao = "";
+    		}
+			;
 
-E
-    : E '+' E {
-        string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
-        $$.label = gentempcode(tipoTemp);
-        $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " + " + $3.label + ";\n";
-    }
-    | E '-' E {
-        string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
-        $$.label = gentempcode(tipoTemp);
-        $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " - " + $3.label + ";\n";
-    }
-    | E '*' E {
-        string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
-        $$.label = gentempcode(tipoTemp);
-        $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " * " + $3.label + ";\n";
-    }
-    | E '/' E {
-        string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
-        $$.label = gentempcode(tipoTemp);
-        $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " / " + $3.label + ";\n";
-    }
-    | '(' E ')' {
-        $$ = $2;
-    }
-	|TK_FLOAT_VAL{
-		
-		 $$.label = gentempcode("float");
-   		 $$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
-	}
+COMANDO		: E ';' 
+			{
+        		$$ = $1;
+    		}
+    		| TIPO TK_ID ';' 
+			{
+   		 		if (tiposVarTemps.count($2.label)) {
+        			cout << "Erro: Variável '" << $2.label << "' já foi declarada." << endl;
+        			exit(1);
+    		}
+    			tiposVarTemps[$2.label] = $1.label;
+    			variaveisTemps.insert($2.label);
+    			$$.traducao = ""; 
+			}
+			;
+
+TIPO		: TK_TIPO_INT     { $$.label = "int"; }
+    		| TK_TIPO_FLOAT   { $$.label = "float"; }
+    		| TK_TIPO_CHAR    { $$.label = "char"; }
+    		| TK_TIPO_BOOLEAN { $$.label = "bool"; };
+
+E			: E '+' E 
+			{
+        		string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
+        		$$.label = gentempcode(tipoTemp);
+        		$$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " + " + $3.label + ";\n";
+    		}
+    		| E '-' E 
+			{
+        		string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
+        		$$.label = gentempcode(tipoTemp);
+        		$$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " - " + $3.label + ";\n";
+    		}
+    		| E '*' E {
+        		string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
+        		$$.label = gentempcode(tipoTemp);
+        		$$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " * " + $3.label + ";\n";
+   			}
+    		| E '/' E 
+			{
+        		string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
+        		$$.label = gentempcode(tipoTemp);
+        		$$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " / " + $3.label + ";\n";
+   	 		}
+    		| '(' E ')' 
+			{
+        		$$ = $2;
+    		}
+			| TK_FLOAT_VAL
+			{
+				$$.label = gentempcode("float");
+   				$$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
+			}
 	
-    | TK_ID '=' E {
-        string tipoVar = tiposVarTemps[$1.label];
-        string tipoExpr = tiposVarTemps[$3.label];
-        if (tipoVar != tipoExpr) {
-            cout << "Erro: Tipos incompatíveis na atribuição!" << endl;
-        }
-        $$.traducao = $1.traducao + $3.traducao + "\t" + $1.label + " = " + $3.label + ";\n";
-    }
-    | TK_NUM {
-        $$.label = gentempcode("int");
-        $$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
-    }
-    | TK_ID {
-        if (!tiposVarTemps.count($1.label)) {
-            cout << "Erro: Variável '" << $1.label << "' não foi declarada." << endl;
-            exit(1);
-        }
-        string tipo = tiposVarTemps[$1.label];
-        $$.label = gentempcode(tipo);
-        $$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
-    };
+    		| TK_ID '=' E 
+			{
+        		string tipoVar = tiposVarTemps[$1.label];
+        		string tipoExpr = tiposVarTemps[$3.label];
+        		if (tipoVar != tipoExpr) {
+            		cout << "Erro: Tipos incompatíveis na atribuição!" << endl;
+        		}
+        		$$.traducao = $1.traducao + $3.traducao + "\t" + $1.label + " = " + $3.label + ";\n";
+   			}
+    		| TK_NUM 
+			{
+        		$$.label = gentempcode("int");
+        		$$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
+    		}
+    		| TK_ID {
+        		if (!tiposVarTemps.count($1.label)) {
+            		cout << "Erro: Variável '" << $1.label << "' não foi declarada." << endl;
+            		exit(1);
+        		}
+        		string tipo = tiposVarTemps[$1.label];
+        		$$.label = gentempcode(tipo);
+        		$$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
+    		}
+			;
 
 %%
 
