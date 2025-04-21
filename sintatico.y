@@ -35,6 +35,7 @@ string gentempcode(string tipo);
 %token TK_CHAR_VAL TK_INT_VAL TK_FLOAT_VAL
 %token TK_TRUE TK_FALSE
 %token TK_MENOR_IGUAL TK_MAIOR_IGUAL TK_IGUAL_IGUAL TK_DIFERENTE
+%token TK_AND TK_OR 
 
 %start S
 %left '+' '-'
@@ -135,6 +136,18 @@ string gentempcode(string tipo);
 		| E TK_DIFERENTE E {
             $$.label = gentempcode("bool");
             $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " != " + $3.label + ";\n";
+		}
+		| E TK_AND E {
+            $$.label = gentempcode("bool");
+            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " && " + $3.label + ";\n";
+		}
+		| E TK_OR E {
+            $$.label = gentempcode("bool");
+            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " || " + $3.label + ";\n";
+		}
+		| '!' E {
+            $$.label = gentempcode("bool");
+            $$.traducao = $2.traducao + "\t" + $$.label + " = !" + $2.label + ";\n";
 		}
     	|TK_FLOAT_VAL{
     		 $$.label = gentempcode("float");

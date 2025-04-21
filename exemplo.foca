@@ -1,4 +1,10 @@
 int main() {
-	bool R;
-	R = 3 != 5;
+	int a;
+	float b;
+	bool resultado;
+
+	a = 10;
+	b = 20.5;
+
+	resultado = (a < b) && !(a == 10);
 }

@@ -31,6 +31,9 @@ ID {LETRA}({LETRA}|{NUM})*
 "=="           { return TK_IGUAL_IGUAL; }
 "!="           { return TK_DIFERENTE; }
 "="            { return '='; }
+"&&"           { return TK_AND; }
+"||"           { return TK_OR; }
+"!"            { return '!'; }
 {NUM}          { yylval.label = yytext; return TK_NUM; }
 {ID}           { yylval.label = yytext; return TK_ID; }
 {REAL}         { yylval.label = yytext; return TK_FLOAT_VAL; }
