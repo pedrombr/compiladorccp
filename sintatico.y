@@ -26,6 +26,8 @@ struct tab {
 int yylex(void);
 void yyerror(string);
 string gentempcode(string tipo);
+string tipoResult(string tipo1, string tipo2);
+string conversao(string var, string tipoOrigem, string tipoDest, string &codigo);
 %}
 
 %token TK_NUM
@@ -97,24 +99,56 @@ string gentempcode(string tipo);
     
     E
         : E '+' E {
-            string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
+            string tipoEsq = tiposVarTemps[$1.label];
+            string tipoDir = tiposVarTemps[$3.label];
+            string tipoTemp = tipoResult(tipoEsq, tipoDir);
+           
+            string codConv = "";
+
+            string esqConv = conversao($1.label, tipoEsq, tipoTemp, codConv);
+            string dirConv = conversao($3.label, tipoDir, tipoTemp, codConv);
+
             $$.label = gentempcode(tipoTemp);
-            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " + " + $3.label + ";\n";
+            $$.traducao = $1.traducao + $3.traducao + codConv + "\t" + $$.label + " = " + esqConv + " + " + dirConv + ";\n";
         }
         | E '-' E {
-            string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
+            string tipoEsq = tiposVarTemps[$1.label];
+            string tipoDir = tiposVarTemps[$3.label];
+            string tipoTemp = tipoResult(tipoEsq, tipoDir);
+           
+            string codConv = "";
+
+            string esqConv = conversao($1.label, tipoEsq, tipoTemp, codConv);
+            string dirConv = conversao($3.label, tipoDir, tipoTemp, codConv);
+
             $$.label = gentempcode(tipoTemp);
-            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " - " + $3.label + ";\n";
+            $$.traducao = $1.traducao + $3.traducao + codConv + "\t" + $$.label + " = " + esqConv + " - " + dirConv + ";\n";
         }
         | E '*' E {
-            string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
+            string tipoEsq = tiposVarTemps[$1.label];
+            string tipoDir = tiposVarTemps[$3.label];
+            string tipoTemp = tipoResult(tipoEsq, tipoDir);
+           
+            string codConv = "";
+
+            string esqConv = conversao($1.label, tipoEsq, tipoTemp, codConv);
+            string dirConv = conversao($3.label, tipoDir, tipoTemp, codConv);
+
             $$.label = gentempcode(tipoTemp);
-            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " * " + $3.label + ";\n";
+            $$.traducao = $1.traducao + $3.traducao + codConv + "\t" + $$.label + " = " + esqConv + " * " + dirConv + ";\n";
         }
         | E '/' E {
-            string tipoTemp = (tiposVarTemps[$1.label] == "float" || tiposVarTemps[$3.label] == "float") ? "float" : "int";
+            string tipoEsq = tiposVarTemps[$1.label];
+            string tipoDir = tiposVarTemps[$3.label];
+            string tipoTemp = tipoResult(tipoEsq, tipoDir);
+           
+            string codConv = "";
+
+            string esqConv = conversao($1.label, tipoEsq, tipoTemp, codConv);
+            string dirConv = conversao($3.label, tipoDir, tipoTemp, codConv);
+
             $$.label = gentempcode(tipoTemp);
-            $$.traducao = $1.traducao + $3.traducao + "\t" + $$.label + " = " + $1.label + " / " + $3.label + ";\n";
+            $$.traducao = $1.traducao + $3.traducao + codConv + "\t" + $$.label + " = " + esqConv + " / " + dirConv + ";\n";
         }
         | '(' E ')' {
             $$ = $2;
@@ -218,6 +252,21 @@ string gentempcode(string tipo) {
     variaveisTemps.insert(nomeTemp);
     tiposVarTemps[nomeTemp] = tipo;
     return nomeTemp;
+}
+
+string tipoResult(string tipo1, string tipo2){
+    if(tipo1 == "float" || tipo2 == "float") return "float";
+    else if(tipo1 == "int" || tipo2 == "int") return "int";
+    else if(tipo1 == "char" || tipo2 == "char") return "char";
+    else return "int";
+}
+
+string conversao(string var, string tipoOrigem, string tipoDest, string &codigo){
+    if(tipoOrigem == tipoDest) return var;
+
+    string temp = gentempcode(tipoDest);
+    codigo += "\t" + temp + " = (" + tipoDest + ") " + var + ";\n";
+    return temp;
 }
 
 int main(int argc, char* argv[]) {
