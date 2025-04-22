@@ -181,8 +181,11 @@ string gentempcode(string tipo);
         | TK_ID '=' E {
             string tipoVar = tiposVarTemps[$1.label];
             string tipoExpr = tiposVarTemps[$3.label];
+            if(tipoVar == "bool") tipoVar = "int";
+            if(tipoExpr == "bool") tipoExpr = "int";
+
             if (tipoVar != tipoExpr) {
-               // cout << "Erro: Tipos incompatíveis na atribuição!" << endl;
+               cout << "Erro: Tipos incompatíveis na atribuição!" << endl;
             }
             $$.traducao = $1.traducao + $3.traducao + "\t" + $1.label + " = " + $3.label + ";\n";
         }

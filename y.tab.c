@@ -642,7 +642,7 @@ static const yytype_uint8 yyrline[] =
        0,    47,    47,    66,    71,    74,    79,    82,    93,    94,
       95,    96,    99,   104,   109,   114,   119,   122,   126,   130,
      134,   138,   142,   146,   150,   154,   158,   163,   170,   175,
-     181,   189,   193
+     181,   192,   196
 };
 #endif
 
@@ -1516,25 +1516,28 @@ yyreduce:
                       {
             string tipoVar = tiposVarTemps[yyvsp[-2].label];
             string tipoExpr = tiposVarTemps[yyvsp[0].label];
+            if(tipoVar == "bool") tipoVar = "int";
+            if(tipoExpr == "bool") tipoExpr = "int";
+
             if (tipoVar != tipoExpr) {
-               // cout << "Erro: Tipos incompatíveis na atribuição!" << endl;
+               cout << "Erro: Tipos incompatíveis na atribuição!" << endl;
             }
             yyval.traducao = yyvsp[-2].traducao + yyvsp[0].traducao + "\t" + yyvsp[-2].label + " = " + yyvsp[0].label + ";\n";
         }
-#line 1525 "y.tab.c"
+#line 1528 "y.tab.c"
     break;
 
   case 31: /* E: TK_NUM  */
-#line 189 "sintatico.y"
+#line 192 "sintatico.y"
                  {
             yyval.label = gentempcode("int");
             yyval.traducao = "\t" + yyval.label + " = " + yyvsp[0].label + ";\n";
         }
-#line 1534 "y.tab.c"
+#line 1537 "y.tab.c"
     break;
 
   case 32: /* E: TK_ID  */
-#line 193 "sintatico.y"
+#line 196 "sintatico.y"
                 {
             if (!tiposVarTemps.count(yyvsp[0].label)) {
                 tiposVarTemps[yyvsp[0].label] = "int";
@@ -1544,11 +1547,11 @@ yyreduce:
             yyval.label = gentempcode(tipo);
             yyval.traducao = "\t" + yyval.label + " = " + yyvsp[0].label + ";\n";
         }
-#line 1548 "y.tab.c"
+#line 1551 "y.tab.c"
     break;
 
 
-#line 1552 "y.tab.c"
+#line 1555 "y.tab.c"
 
       default: break;
     }
@@ -1741,7 +1744,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 203 "sintatico.y"
+#line 206 "sintatico.y"
 
 
 #include "lex.yy.c"
