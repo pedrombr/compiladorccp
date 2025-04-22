@@ -45,7 +45,7 @@ string gentempcode(string tipo);
 %%
 
     S : TK_TIPO_INT TK_MAIN '(' ')' BLOCO {
-        string codigo = "/*Compilador FOCA*/\n"
+        string codigo = "/*Compilador CCP*/\n"
                         "#include <iostream>\n"
                         "#include<string.h>\n"
                         "#define true 1\n"
@@ -182,7 +182,7 @@ string gentempcode(string tipo);
             string tipoVar = tiposVarTemps[$1.label];
             string tipoExpr = tiposVarTemps[$3.label];
             if (tipoVar != tipoExpr) {
-                cout << "Erro: Tipos incompatíveis na atribuição!" << endl;
+               // cout << "Erro: Tipos incompatíveis na atribuição!" << endl;
             }
             $$.traducao = $1.traducao + $3.traducao + "\t" + $1.label + " = " + $3.label + ";\n";
         }
@@ -192,13 +192,13 @@ string gentempcode(string tipo);
         }
         | TK_ID {
             if (!tiposVarTemps.count($1.label)) {
-                cout << "Erro: Variável '" << $1.label << "' não foi declarada." << endl;
-                exit(1);
+                tiposVarTemps[$1.label] = "int";
+                variaveisTemps.insert($1.label);
             }
             string tipo = tiposVarTemps[$1.label];
             $$.label = gentempcode(tipo);
             $$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
-        };
+        }
 
 %%
 

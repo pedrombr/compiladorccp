@@ -1252,7 +1252,7 @@ yyreduce:
   case 2: /* S: TK_TIPO_INT TK_MAIN '(' ')' BLOCO  */
 #line 47 "sintatico.y"
                                           {
-        string codigo = "/*Compilador FOCA*/\n"
+        string codigo = "/*Compilador CCP*/\n"
                         "#include <iostream>\n"
                         "#include<string.h>\n"
                         "#define true 1\n"
@@ -1517,7 +1517,7 @@ yyreduce:
             string tipoVar = tiposVarTemps[yyvsp[-2].label];
             string tipoExpr = tiposVarTemps[yyvsp[0].label];
             if (tipoVar != tipoExpr) {
-                cout << "Erro: Tipos incompatíveis na atribuição!" << endl;
+               // cout << "Erro: Tipos incompatíveis na atribuição!" << endl;
             }
             yyval.traducao = yyvsp[-2].traducao + yyvsp[0].traducao + "\t" + yyvsp[-2].label + " = " + yyvsp[0].label + ";\n";
         }
@@ -1537,8 +1537,8 @@ yyreduce:
 #line 193 "sintatico.y"
                 {
             if (!tiposVarTemps.count(yyvsp[0].label)) {
-                cout << "Erro: Variável '" << yyvsp[0].label << "' não foi declarada." << endl;
-                exit(1);
+                tiposVarTemps[yyvsp[0].label] = "int";
+                variaveisTemps.insert(yyvsp[0].label);
             }
             string tipo = tiposVarTemps[yyvsp[0].label];
             yyval.label = gentempcode(tipo);
