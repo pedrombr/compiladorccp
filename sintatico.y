@@ -15,6 +15,7 @@ map<string, string> tiposVarTemps;
 struct atributos {
     string label;
     string traducao;
+    string tipoExp;
 };
 
 struct tab {
@@ -235,6 +236,18 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
             string tipo = tiposVarTemps[$1.label];
             $$.label = gentempcode(tipo);
             $$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
+        }
+        | '(' TIPO ')' E {
+            string tipoOrigem = tiposVarTemps[$4.label];
+            string tipoDest = $2.tipoExp;
+
+            string codConv = "";
+            string convertido = conversao($4.label, tipoOrigem, tipoDest, codConv);
+
+            $$.label = convertido;
+            $$.traducao = $4.traducao + codConv;
+
+            tiposVarTemps[$$.label] = tipoDest;
         }
 
 %%

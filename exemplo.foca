@@ -1,5 +1,5 @@
 int main() {
-	float F;
 	int I;
-	F = I + 2.5;
+	float F;
+	I = (int) F;
 }
