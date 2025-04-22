@@ -1330,25 +1330,25 @@ yyreduce:
 
   case 8: /* TIPO: TK_TIPO_INT  */
 #line 96 "sintatico.y"
-                          { yyval.label = "int"; }
+                          { yyval.label = "int"; yyval.tipoExp = "int";}
 #line 1335 "y.tab.c"
     break;
 
   case 9: /* TIPO: TK_TIPO_FLOAT  */
 #line 97 "sintatico.y"
-                          { yyval.label = "float"; }
+                          { yyval.label = "float"; yyval.tipoExp = "float"; }
 #line 1341 "y.tab.c"
     break;
 
   case 10: /* TIPO: TK_TIPO_CHAR  */
 #line 98 "sintatico.y"
-                          { yyval.label = "char"; }
+                          { yyval.label = "char"; yyval.tipoExp = "char"; }
 #line 1347 "y.tab.c"
     break;
 
   case 11: /* TIPO: TK_TIPO_BOOLEAN  */
 #line 99 "sintatico.y"
-                          { yyval.label = "bool"; }
+                          { yyval.label = "bool"; yyval.tipoExp = "bool"; }
 #line 1353 "y.tab.c"
     break;
 

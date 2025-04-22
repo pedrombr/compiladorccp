@@ -93,10 +93,10 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
     };
     
     TIPO
-        : TK_TIPO_INT     { $$.label = "int"; }
-        | TK_TIPO_FLOAT   { $$.label = "float"; }
-        | TK_TIPO_CHAR    { $$.label = "char"; }
-        | TK_TIPO_BOOLEAN { $$.label = "bool"; };
+        : TK_TIPO_INT     { $$.label = "int"; $$.tipoExp = "int";}
+        | TK_TIPO_FLOAT   { $$.label = "float"; $$.tipoExp = "float"; }
+        | TK_TIPO_CHAR    { $$.label = "char"; $$.tipoExp = "char"; }
+        | TK_TIPO_BOOLEAN { $$.label = "bool"; $$.tipoExp = "bool"; };
     
     E
         : E '+' E {
