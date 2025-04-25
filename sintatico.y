@@ -9,8 +9,8 @@
 using namespace std;
 
 int var_temp_qnt = 0;
-set<string> variaveisTemps;
-map<string, string> tiposVarTemps;
+set<string> variaveisNome;
+map<string, string> tabelaSimbolos;
 
 struct atributos {
     string label;
@@ -56,7 +56,7 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
                         "#include<stdio.h>\n"
                         "int main(void) {\n";
 
-        for (auto& par : tiposVarTemps) {
+        for (auto& par : tabelaSimbolos) {
             codigo += "\t" + par.second + " " + par.first + ";\n"; 
         }
 
@@ -83,12 +83,12 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
             $$ = $1;
         }
         | TIPO TK_ID ';' {
-       		 if (tiposVarTemps.count($2.label)) {
+       		 if (tabelaSimbolos.count($2.label)) {
             	cout << "Erro: Variável '" << $2.label << "' já foi declarada." << endl;
             	exit(1);
         }
-        	tiposVarTemps[$2.label] = $1.label;
-        	variaveisTemps.insert($2.label);
+        	tabelaSimbolos[$2.label] = $1.label;
+        	variaveisNome.insert($2.label);
         	$$.traducao = ""; 
     };
     
@@ -100,8 +100,8 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
     
     E
         : E '+' E {
-            string tipoEsq = tiposVarTemps[$1.label];
-            string tipoDir = tiposVarTemps[$3.label];
+            string tipoEsq = tabelaSimbolos[$1.label];
+            string tipoDir = tabelaSimbolos[$3.label];
             string tipoTemp = tipoResult(tipoEsq, tipoDir);
            
             string codConv = "";
@@ -113,8 +113,8 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
             $$.traducao = $1.traducao + $3.traducao + codConv + "\t" + $$.label + " = " + esqConv + " + " + dirConv + ";\n";
         }
         | E '-' E {
-            string tipoEsq = tiposVarTemps[$1.label];
-            string tipoDir = tiposVarTemps[$3.label];
+            string tipoEsq = tabelaSimbolos[$1.label];
+            string tipoDir = tabelaSimbolos[$3.label];
             string tipoTemp = tipoResult(tipoEsq, tipoDir);
            
             string codConv = "";
@@ -126,8 +126,8 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
             $$.traducao = $1.traducao + $3.traducao + codConv + "\t" + $$.label + " = " + esqConv + " - " + dirConv + ";\n";
         }
         | E '*' E {
-            string tipoEsq = tiposVarTemps[$1.label];
-            string tipoDir = tiposVarTemps[$3.label];
+            string tipoEsq = tabelaSimbolos[$1.label];
+            string tipoDir = tabelaSimbolos[$3.label];
             string tipoTemp = tipoResult(tipoEsq, tipoDir);
            
             string codConv = "";
@@ -139,8 +139,8 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
             $$.traducao = $1.traducao + $3.traducao + codConv + "\t" + $$.label + " = " + esqConv + " * " + dirConv + ";\n";
         }
         | E '/' E {
-            string tipoEsq = tiposVarTemps[$1.label];
-            string tipoDir = tiposVarTemps[$3.label];
+            string tipoEsq = tabelaSimbolos[$1.label];
+            string tipoDir = tabelaSimbolos[$3.label];
             string tipoTemp = tipoResult(tipoEsq, tipoDir);
            
             string codConv = "";
@@ -214,8 +214,8 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
         }
 
         | TK_ID '=' E {
-            string tipoVar = tiposVarTemps[$1.label];
-            string tipoExpr = tiposVarTemps[$3.label];
+            string tipoVar = tabelaSimbolos[$1.label];
+            string tipoExpr = tabelaSimbolos[$3.label];
             if(tipoVar == "bool") tipoVar = "int";
             if(tipoExpr == "bool") tipoExpr = "int";
 
@@ -229,16 +229,16 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
             $$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
         }
         | TK_ID {
-            if (!tiposVarTemps.count($1.label)) {
-                tiposVarTemps[$1.label] = "int";
-                variaveisTemps.insert($1.label);
+            if (!tabelaSimbolos.count($1.label)) {
+                tabelaSimbolos[$1.label] = "int";
+                variaveisNome.insert($1.label);
             }
-            string tipo = tiposVarTemps[$1.label];
+            string tipo = tabelaSimbolos[$1.label];
             $$.label = gentempcode(tipo);
             $$.traducao = "\t" + $$.label + " = " + $1.label + ";\n";
         }
         | '(' TIPO ')' E {
-            string tipoOrigem = tiposVarTemps[$4.label];
+            string tipoOrigem = tabelaSimbolos[$4.label];
             string tipoDest = $2.tipoExp;
 
             string codConv = "";
@@ -247,7 +247,7 @@ string conversao(string var, string tipoOrigem, string tipoDest, string &codigo)
             $$.label = convertido;
             $$.traducao = $4.traducao + codConv;
 
-            tiposVarTemps[$$.label] = tipoDest;
+            tabelaSimbolos[$$.label] = tipoDest;
         }
 
 %%
@@ -262,8 +262,8 @@ string gentempcode(string tipo) {
     
     var_temp_qnt++;
     string nomeTemp = "t" + to_string(var_temp_qnt);
-    variaveisTemps.insert(nomeTemp);
-    tiposVarTemps[nomeTemp] = tipo;
+    variaveisNome.insert(nomeTemp);
+    tabelaSimbolos[nomeTemp] = tipo;
     return nomeTemp;
 }
 

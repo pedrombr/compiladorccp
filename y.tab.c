@@ -79,8 +79,8 @@
 using namespace std;
 
 int var_temp_qnt = 0;
-set<string> variaveisTemps;
-map<string, string> tiposVarTemps;
+set<string> variaveisNome;
+map<string, string> tabelaSimbolos;
 
 struct atributos {
     string label;
@@ -1270,7 +1270,7 @@ yyreduce:
                         "#include<stdio.h>\n"
                         "int main(void) {\n";
 
-        for (auto& par : tiposVarTemps) {
+        for (auto& par : tabelaSimbolos) {
             codigo += "\t" + par.second + " " + par.first + ";\n"; 
         }
 
@@ -1317,12 +1317,12 @@ yyreduce:
   case 7: /* COMANDO: TIPO TK_ID ';'  */
 #line 85 "sintatico.y"
                          {
-       		 if (tiposVarTemps.count(yyvsp[-1].label)) {
+       		 if (tabelaSimbolos.count(yyvsp[-1].label)) {
             	cout << "Erro: Variável '" << yyvsp[-1].label << "' já foi declarada." << endl;
             	exit(1);
         }
-        	tiposVarTemps[yyvsp[-1].label] = yyvsp[-2].label;
-        	variaveisTemps.insert(yyvsp[-1].label);
+        	tabelaSimbolos[yyvsp[-1].label] = yyvsp[-2].label;
+        	variaveisNome.insert(yyvsp[-1].label);
         	yyval.traducao = ""; 
     }
 #line 1329 "y.tab.c"
@@ -1355,8 +1355,8 @@ yyreduce:
   case 12: /* E: E '+' E  */
 #line 102 "sintatico.y"
                   {
-            string tipoEsq = tiposVarTemps[yyvsp[-2].label];
-            string tipoDir = tiposVarTemps[yyvsp[0].label];
+            string tipoEsq = tabelaSimbolos[yyvsp[-2].label];
+            string tipoDir = tabelaSimbolos[yyvsp[0].label];
             string tipoTemp = tipoResult(tipoEsq, tipoDir);
            
             string codConv = "";
@@ -1373,8 +1373,8 @@ yyreduce:
   case 13: /* E: E '-' E  */
 #line 115 "sintatico.y"
                   {
-            string tipoEsq = tiposVarTemps[yyvsp[-2].label];
-            string tipoDir = tiposVarTemps[yyvsp[0].label];
+            string tipoEsq = tabelaSimbolos[yyvsp[-2].label];
+            string tipoDir = tabelaSimbolos[yyvsp[0].label];
             string tipoTemp = tipoResult(tipoEsq, tipoDir);
            
             string codConv = "";
@@ -1391,8 +1391,8 @@ yyreduce:
   case 14: /* E: E '*' E  */
 #line 128 "sintatico.y"
                   {
-            string tipoEsq = tiposVarTemps[yyvsp[-2].label];
-            string tipoDir = tiposVarTemps[yyvsp[0].label];
+            string tipoEsq = tabelaSimbolos[yyvsp[-2].label];
+            string tipoDir = tabelaSimbolos[yyvsp[0].label];
             string tipoTemp = tipoResult(tipoEsq, tipoDir);
            
             string codConv = "";
@@ -1409,8 +1409,8 @@ yyreduce:
   case 15: /* E: E '/' E  */
 #line 141 "sintatico.y"
                   {
-            string tipoEsq = tiposVarTemps[yyvsp[-2].label];
-            string tipoDir = tiposVarTemps[yyvsp[0].label];
+            string tipoEsq = tabelaSimbolos[yyvsp[-2].label];
+            string tipoDir = tabelaSimbolos[yyvsp[0].label];
             string tipoTemp = tipoResult(tipoEsq, tipoDir);
            
             string codConv = "";
@@ -1556,8 +1556,8 @@ yyreduce:
   case 30: /* E: TK_ID '=' E  */
 #line 216 "sintatico.y"
                       {
-            string tipoVar = tiposVarTemps[yyvsp[-2].label];
-            string tipoExpr = tiposVarTemps[yyvsp[0].label];
+            string tipoVar = tabelaSimbolos[yyvsp[-2].label];
+            string tipoExpr = tabelaSimbolos[yyvsp[0].label];
             if(tipoVar == "bool") tipoVar = "int";
             if(tipoExpr == "bool") tipoExpr = "int";
 
@@ -1581,11 +1581,11 @@ yyreduce:
   case 32: /* E: TK_ID  */
 #line 231 "sintatico.y"
                 {
-            if (!tiposVarTemps.count(yyvsp[0].label)) {
-                tiposVarTemps[yyvsp[0].label] = "int";
-                variaveisTemps.insert(yyvsp[0].label);
+            if (!tabelaSimbolos.count(yyvsp[0].label)) {
+                tabelaSimbolos[yyvsp[0].label] = "int";
+                variaveisNome.insert(yyvsp[0].label);
             }
-            string tipo = tiposVarTemps[yyvsp[0].label];
+            string tipo = tabelaSimbolos[yyvsp[0].label];
             yyval.label = gentempcode(tipo);
             yyval.traducao = "\t" + yyval.label + " = " + yyvsp[0].label + ";\n";
         }
@@ -1595,7 +1595,7 @@ yyreduce:
   case 33: /* E: '(' TIPO ')' E  */
 #line 240 "sintatico.y"
                          {
-            string tipoOrigem = tiposVarTemps[yyvsp[0].label];
+            string tipoOrigem = tabelaSimbolos[yyvsp[0].label];
             string tipoDest = yyvsp[-2].tipoExp;
 
             string codConv = "";
@@ -1604,7 +1604,7 @@ yyreduce:
             yyval.label = convertido;
             yyval.traducao = yyvsp[0].traducao + codConv;
 
-            tiposVarTemps[yyval.label] = tipoDest;
+            tabelaSimbolos[yyval.label] = tipoDest;
         }
 #line 1610 "y.tab.c"
     break;
@@ -1816,8 +1816,8 @@ string gentempcode(string tipo) {
     
     var_temp_qnt++;
     string nomeTemp = "t" + to_string(var_temp_qnt);
-    variaveisTemps.insert(nomeTemp);
-    tiposVarTemps[nomeTemp] = tipo;
+    variaveisNome.insert(nomeTemp);
+    tabelaSimbolos[nomeTemp] = tipo;
     return nomeTemp;
 }
 
