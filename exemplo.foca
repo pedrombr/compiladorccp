@@ -1,5 +1,14 @@
-int main() {
-	int I;
-	float F;
-	I = (int) F;
+int main () {
+	int a;
+    float b;
+	float c;
+    char d;
+    bool resultado;
+
+    a = 10;
+    b = 20.5;
+	c = a + b;
+    d = 'D';
+
+    resultado = (a < b) && !(a == 10);
 }
