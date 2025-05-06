@@ -1,5 +1,5 @@
-int main () {
-	int a;
+inteiro principal () {
+    inteiro a;
     a = 2;
     b = 3;
     resultado = a + b;
