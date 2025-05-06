@@ -15,13 +15,13 @@ ID {LETRA}({LETRA}|{NUM})*
 
 "\n"           {}
 {DELIM}        {}
-"main"         { return TK_MAIN; }
-"int"          { return TK_TIPO_INT; }
-"float"        { return TK_TIPO_FLOAT; }
-"char"         { return TK_TIPO_CHAR; }
-"bool"         { return TK_TIPO_BOOLEAN; }
-"true"         { yylval.label = "true"; return TK_TRUE; }
-"false"        { yylval.label = "false"; return TK_FALSE; }
+"principal"         { return TK_MAIN; }
+"inteiro"          { return TK_TIPO_INT; }
+"flutuante"        { return TK_TIPO_FLOAT; }
+"caractere"         { return TK_TIPO_CHAR; }
+"booleano"         { return TK_TIPO_BOOLEAN; }
+"verdadeiro"         { yylval.label = "true"; return TK_TRUE; }
+"falso"        { yylval.label = "false"; return TK_FALSE; }
 [(){}[\];,]    { return *yytext; }
 [+\-*/]        { return *yytext; }
 "<"            { return '<'; }
